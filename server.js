@@ -21,6 +21,9 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 // Routes
+app.get("/", (req, res) => {
+  res.send("Welcome to the Blog System API");
+});
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/posts", require("./routes/posts"));
 
