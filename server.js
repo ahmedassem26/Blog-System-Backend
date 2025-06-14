@@ -32,4 +32,4 @@ app.get("/test", (req, res) => {
   res.json({ message: "Backend is working!" });
 });
 
-export default app;
+module.exports = app;
