@@ -6,6 +6,23 @@ const connectDB = require("./db");
 
 const app = express();
 
+// Connect to DB before handling requests
+let isDBConnected = false;
+
+app.use(async (req, res, next) => {
+  if (!isDBConnected) {
+    try {
+      await connectDB();
+      isDBConnected = true;
+      console.log("Database connected successfully");
+    } catch (err) {
+      console.error("Database connection error:", err);
+      return res.status(500).json({ error: "Database connection failed" });
+    }
+  }
+  next();
+});
+
 // Middleware
 app.use(express.json());
 app.use(
@@ -14,11 +31,6 @@ app.use(
     credentials: true,
   })
 );
-
-// Connect to DB
-connectDB()
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB connection error:", err));
 
 // Routes
 app.get("/", (req, res) => {
