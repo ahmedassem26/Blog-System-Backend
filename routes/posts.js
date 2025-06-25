@@ -171,7 +171,9 @@ router.delete("/:id/comments/:commentId", auth, async (req, res) => {
         .json({ message: "Not authorized to delete this comment" });
     }
 
-    post.comments.id(req.params.commentId).remove();
+    post.comments = post.comments.filter(
+      (c) => c._id.toString() !== req.params.commentId
+    );
     await post.save();
 
     res.json({ message: "Comment deleted" });
